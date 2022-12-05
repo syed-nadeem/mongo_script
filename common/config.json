@@ -1,0 +1,4 @@
+{
+  "mongo_path": "conn_string",
+  "data_base": "bigdata"
+}
