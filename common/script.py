@@ -26,6 +26,20 @@ class MongoDatabases:
             print("Exception : ", str(e))
             return []
 
+    def get_documents_count_of_all_collections(self, database):
+        try:
+            conn = self.cluster
+            db = conn[database]
+            my_dic = {}
+            for coll_name in db.list_collection_names():
+                count = db[coll_name].count_documents({})
+                my_dic[coll_name] = count
+                print("db: {}, collection:{}, documents:{}".format(database, coll_name, count))
+            return my_dic
+        except Exception as e:
+            print("Exception : ", str(e))
+            return {}
+
     def iterate_over_all_database(self):
         try:
             conn = self.cluster
@@ -65,4 +79,7 @@ if __name__ == "__main__":
     for database in databases:
         collections = ld_data.get_all_database_collections(database)
         print("All Collections of Database \"{}\" are {}".format(database, collections))
+    for database in databases:
+        doc_count = ld_data.get_documents_count_of_all_collections(database)
+        print("All Collections documents of Database \"{}\" are {}".format(database, doc_count))
     # ld_data.iterate_over_all_database()
